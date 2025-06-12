@@ -9,6 +9,8 @@ function Login() {
   const [email, setEmailId] = useState("winston@gmail.com");
   const [password, setPassword] = useState("Winston@123");
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,7 +24,8 @@ function Login() {
       dispatch(addUser(res.data['data']))
       return navigate("/");
     } catch (err) {
-      console.error(err)
+      console.log(err)
+      setError(err?.response?.data?.message || "Something Went Wrong")
     }
   }
 
@@ -67,7 +70,7 @@ function Login() {
             />
             <span className="label-text">Show Password</span>
           </label>
-
+          <p className="text-red-500 flex justify-center">{error}</p>
           <div className="form-control flex justify-center mt-4">
             <button className="btn btn-primary" onClick={handleLogin}>Login</button>
           </div>
