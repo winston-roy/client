@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 
 function Login() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [isLoginFrom, setIsLoginForm] = useState(true);
   const [email, setEmailId] = useState("winston@gmail.com");
   const [password, setPassword] = useState("Winston@123");
   const [showPassword, setShowPassword] = useState(false);
@@ -29,12 +32,55 @@ function Login() {
     }
   };
 
+  const handleSignUp = async () => {
+    try {
+      setError('');
+      const res = await axios.post(`${BASE_URL}/auth/signup`, {
+        firstName,
+        lastName,
+        email,
+        password,
+      }, { withCredentials: true });
+      dispatch(addUser(res.data.data));
+      navigate("/profile");
+    } catch (err) {
+      console.error(err);
+      setError(err?.response?.data?.message || 'Something went wrong');
+    }
+  };
+
   return (
     <div className="h-screen flex items-center justify-center bg-base-200 overflow-hidden">
       <div className="card w-96 bg-base-100 shadow-xl">
         <div className="card-body">
-          <h2 className="card-title text-2xl justify-center mb-6">Login</h2>
+          <h2 className="card-title text-2xl justify-center mb-6"> {isLoginFrom ? "Login" : "Signup"}</h2>
 
+          {!isLoginFrom && (
+            <>
+              <label className="form-control w-full max-w-xs my-2">
+                <div className="label">
+                  <span className="label-text">Firstname</span>
+                </div>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </label>
+              <label className="form-control w-full max-w-xs my-2">
+                <div className="label">
+                  <span className="label-text">Lastname</span>
+                </div>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="input input-bordered w-full max-w-xs"
+                />
+              </label>
+            </>
+          )}
           {/* Email */}
           <div className="form-control mb-4">
             <label className="label"><span className="label-text">Email</span></label>
@@ -48,7 +94,7 @@ function Login() {
           </div>
 
           {/* Password + Show Toggle */}
-          <div className="form-control mb-2">
+          <div className="form-control mb-4">
             <label className="label"><span className="label-text">Password</span></label>
             <div className="relative">
               <input
@@ -72,16 +118,24 @@ function Login() {
 
           {/* Login Button */}
           <div className="form-control flex justify-center mt-6">
-            <button className="btn btn-primary" onClick={handleLogin}>Login</button>
+            <button className="btn btn-primary" onClick={isLoginFrom ? handleLogin : handleSignUp}>{isLoginFrom ? "Login" : "Signup"}</button>
           </div>
 
           {/* Sign Up */}
-          <div className="text-center mt-4">
+          {/* <div className="text-center mt-4">
             <span className="text-sm">Don't have an account?</span>
             <button className="btn btn-link text-primary" onClick={() => navigate('/signup')}>
               Sign Up
             </button>
-          </div>
+          </div> */}
+          <p
+            className=" text-center cursor-pointer py-2"
+            onClick={() => setIsLoginForm((value) => !value)}
+          >
+            {isLoginFrom
+              ? "New user ? signup here"
+              : "Existing User ? Login here"}
+          </p>
         </div>
       </div>
     </div>
@@ -89,96 +143,3 @@ function Login() {
 }
 
 export default Login;
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import axios from 'axios';
-// import { useDispatch } from 'react-redux'
-// import { addUser } from "../utils/userSlice";
-// import { useNavigate } from 'react-router-dom';
-// import {BASE_URL} from '../utils/constants';
-
-// function Login() {
-//   const [email, setEmailId] = useState("winston@gmail.com");
-//   const [password, setPassword] = useState("Winston@123");
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [error, setError] = useState("");
-
-//   const dispatch = useDispatch();
-//   const navigate = useNavigate();
-
-//   const handleLogin = async () => {
-
-//     try {
-//       const res = await axios.post(BASE_URL + '/auth/login', {
-//         email,
-//         password
-//       }, { withCredentials: true });
-//       dispatch(addUser(res.data['data']))
-//       return navigate("/");
-//     } catch (err) {
-//       console.log(err)
-//       setError(err?.response?.data?.message || "Something Went Wrong")
-//     }
-//   }
-
-//   return (
-//     <div className="h-screen flex items-center justify-center bg-base-200 overflow-hidden">
-//       <div className="card w-96 bg-base-100 shadow-xl">
-//         <div className="card-body">
-//           <h2 className="card-title text-2xl justify-center mb-4">Login</h2>
-
-//           <div className="form-control mb-3">
-//             <label className="label">
-//               <span className="label-text">Email</span>
-//             </label>
-//             <input
-//               type="email"
-//               value={email}
-//               placeholder="email@example.com"
-//               className="input input-bordered"
-//               onChange={(e) => setEmailId(e.target.value)}
-//             />
-//           </div>
-
-//           <div className="form-control mb-2">
-//             <label className="label">
-//               <span className="label-text">Password</span>
-//             </label>
-//             <input
-//               type={showPassword ? "text" : "password"}
-//               value={password}
-//               placeholder="••••••••"
-//               className="input input-bordered"
-//               onChange={(e) => setPassword(e.target.value)}
-//             />
-//           </div>
-
-//           <label className="label cursor-pointer justify-start gap-2 mb-4">
-//             <input
-//               type="checkbox"
-//               className="checkbox checkbox-sm"
-//               checked={showPassword}
-//               onChange={() => setShowPassword((prev) => !prev)}
-//             />
-//             <span className="label-text">Show Password</span>
-//           </label>
-//           <p className="text-red-500 flex justify-center">{error}</p>
-//           <div className="form-control flex justify-center mt-4">
-//             <button className="btn btn-primary" onClick={handleLogin}>Login</button>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Login;
