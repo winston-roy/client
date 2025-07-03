@@ -9,8 +9,8 @@ function Login() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isLoginFrom, setIsLoginForm] = useState(true);
-  const [email, setEmailId] = useState("winston@gmail.com");
-  const [password, setPassword] = useState("Winston@123");
+  const [email, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
