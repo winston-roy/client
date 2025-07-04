@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnection } from '../utils/connectionSlice';
+import { Link } from 'react-router-dom';
 
 const Connections = () => {
     const connections = useSelector((store) => store.connections);
@@ -28,18 +29,18 @@ const Connections = () => {
     if (connections.length === 0) return <h1 className="text-center mt-10">No Connections Found!!!</h1>;
 
     return (
-        <div className="my-10 px-4 max-w-7xl mx-auto">
+        <div className="my-10 px-4 max-w-3xl mx-auto">
             <h1 className="text-4xl font-bold text-center mb-10 text-primary">Your Connections</h1>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="flex flex-col gap-8 items-center">
                 {connections.map((connection) => {
                     const { _id, firstName, lastName, profilePic, gender, age, about } = connection;
                     return (
                         <div
                             key={_id}
-                            className="card shadow-xl transition-transform hover:scale-105 duration-200 bg-base-300"
+                            className="card w-full max-w-md shadow-xl transition-transform hover:scale-[1.02] duration-200 bg-base-300"
                         >
-                            <figure className="px-6 pt-6">
+                            <figure className="px-6 pt-6 flex justify-center">
                                 <img
                                     src={profilePic || "http://dummyimage.com/200x200"}
                                     alt={`${firstName} ${lastName}`}
@@ -50,6 +51,12 @@ const Connections = () => {
                                 <h2 className="card-title text-lg font-semibold">{firstName} {lastName}</h2>
                                 <p className="text-sm text-gray-500">{age} years old | {gender}</p>
                                 {about && <p className="mt-2 text-sm italic text-gray-600">{about}</p>}
+
+                                <div className="card-actions mt-4">
+                                    <button className="btn btn-primary">
+                                        <Link to={'/chat/' + _id}>💬 Chat</Link>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     );
