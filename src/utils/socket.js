@@ -4,5 +4,5 @@ export const createSocketConnection = () => {
     if (location.hostname === "localhost")
         return io('http://localhost:7777');
     else
-        return io("/", {path:"/api/v2/socket.io"})
+        return io("/api/v2", {path:"/api/socket.io"})
 }
