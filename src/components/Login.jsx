@@ -3,14 +3,14 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from 'react-router-dom';
-import { BASE_URL } from '../utils/constants';
+import { BASE_URL, SERVER } from '../utils/constants';
 
 function Login() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [isLoginFrom, setIsLoginForm] = useState(true);
-  const [email, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmailId] = useState(SERVER == 'LOCAL' ? 'winston@gmail.com' : '');
+  const [password, setPassword] = useState(SERVER == 'LOCAL' ? 'Winston@123' : '');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
@@ -95,23 +95,26 @@ function Login() {
 
           {/* Password + Show Toggle */}
           <div className="form-control mb-4">
-            <label className="label"><span className="label-text">Password</span></label>
-            <div className="relative">
+            <label className="label">
+              <span className="label-text">Password</span>
+            </label>
+            <div className="flex items-center">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 placeholder="••••••••"
-                className="input input-bordered w-full pr-10"
+                className="input input-bordered w-full"
                 onChange={(e) => setPassword(e.target.value)}
               />
               <span
-                className="absolute right-3 top-2.5 cursor-pointer text-gray-500"
+                className="top-2.5 cursor-pointer text-gray-500"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? "🙈" : "👁️"}
               </span>
             </div>
           </div>
+
 
           {/* Error Message */}
           {error && <p className="text-red-500 text-center text-sm mt-2">{error}</p>}
@@ -120,14 +123,6 @@ function Login() {
           <div className="form-control flex justify-center mt-6">
             <button className="btn btn-primary" onClick={isLoginFrom ? handleLogin : handleSignUp}>{isLoginFrom ? "Login" : "Signup"}</button>
           </div>
-
-          {/* Sign Up */}
-          {/* <div className="text-center mt-4">
-            <span className="text-sm">Don't have an account?</span>
-            <button className="btn btn-link text-primary" onClick={() => navigate('/signup')}>
-              Sign Up
-            </button>
-          </div> */}
           <p
             className=" text-center cursor-pointer py-2"
             onClick={() => setIsLoginForm((value) => !value)}
