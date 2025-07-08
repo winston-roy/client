@@ -11,6 +11,8 @@ import Requests from './components/Requests';
 import Premium from './components/Premium';
 import Chat from './components/Chat';
 
+import ProtectedRoute from './middlewares/ProtectedRoute';
+
 function App() {
 
   return (
@@ -19,13 +21,13 @@ function App() {
         <BrowserRouter basename='/'>
           <Routes>
             <Route path='/' element={<Body />}>
-              <Route path='/' element={<Feed />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/connections' element={<Connections />} />
-              <Route path='/requests' element={<Requests />} />
-              <Route path='/premium' element={<Premium />} />
-              <Route path='/chat/:targetUserId' element={<Chat />} />
+              <Route index element={<Feed />} /> 
+              <Route path='login' element={<Login />} />
+              <Route path='profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path='connections' element={<ProtectedRoute><Connections /></ProtectedRoute>} />
+              <Route path='requests' element={<ProtectedRoute><Requests /></ProtectedRoute>} />
+              <Route path='premium' element={<ProtectedRoute><Premium /></ProtectedRoute>} />
+              <Route path='chat/:targetUserId' element={<ProtectedRoute><Chat /></ProtectedRoute>} />
             </Route>
           </Routes>
         </BrowserRouter>
