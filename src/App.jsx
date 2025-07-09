@@ -28,6 +28,7 @@ function App() {
               <Route path='requests' element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path='premium' element={<ProtectedRoute><Premium /></ProtectedRoute>} />
               <Route path='chat/:targetUserId' element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+              <Route path='*' element={<Login />} />
             </Route>
           </Routes>
         </BrowserRouter>

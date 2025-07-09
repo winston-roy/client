@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
+import { useNavigate } from "react-router-dom";
 
 function Premium() {
     const [error, setError] = useState("");
     const [isUserPremium, setIsUserPremium] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         verifyPremiumUser()
@@ -74,7 +76,30 @@ function Premium() {
         }
     }
 
-    return isUserPremium ? "You're are already a premium user" : (
+    return isUserPremium ? (
+        <div
+            className="min-h-screen bg-cover bg-center relative flex items-center justify-center"
+            style={{
+                backgroundImage: "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1400&q=80')",
+            }}
+        >
+            {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black bg-opacity-60 backdrop-blur-sm"></div>
+
+            <div className="relative z-10 text-center p-10 bg-white/10 backdrop-blur-md rounded-xl border border-white/30 max-w-xl">
+                <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">✨ You're a Premium Member</h1>
+                <p className="text-white/80 text-lg mb-6">
+                    Thank you for upgrading! Enjoy unlimited features and priority support.
+                </p>
+                <button
+                    className="btn btn-outline btn-accent text-white"
+                    onClick={() => navigate('/')}
+                >
+                    Go to Profile
+                </button>
+            </div>
+        </div>
+    ) : (
         <div
             className="min-h-screen bg-cover bg-center relative"
             style={{

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
@@ -11,6 +11,7 @@ function Chat() {
     const user = useSelector((store) => store.user);
     const userId = user?._id;
     const firstName = user?.firstName;
+    const navigate = useNavigate();
 
     const [messages, setMessages] = useState([]);
     const [targetUserInfo, setTargetUserInfo] = useState(null);
@@ -33,6 +34,8 @@ function Chat() {
                 const res = await axios.get(`${BASE_URL}/auth/user/${targetUserId}`, { withCredentials: true });
                 setTargetUserInfo(res.data.data);
             } catch (err) {
+                if (err.status === 401)
+                    navigate("/login");
                 console.error("Error fetching user info", err);
             }
         };

@@ -36,6 +36,7 @@ const NavBar = () => {
                                 src={user.profilePic} />
                         </div>
                     </div>
+
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
@@ -48,6 +49,18 @@ const NavBar = () => {
                         <li><Link to='/connections'>Connections</Link></li>
                         <li><Link to='/requests'>Requests</Link></li>
                         <li><Link to='/premium'>Premium</Link></li>
+                        {/* ✅ API Documentation link */}
+                        {user?.isAdmin && (
+                            <li>
+                                <a
+                                    href={`${BASE_URL}/api-test-page`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    API Documentation
+                                </a>
+                            </li>
+                        )}
                         <li><a onClick={handleLogout}>Logout</a></li>
                     </ul>
                 </div>

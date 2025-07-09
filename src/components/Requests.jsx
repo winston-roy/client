@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { BASE_URL } from '../utils/constants';
 import { addRequest, removeRequest  } from '../utils/requestSlice';
+import { useNavigate } from 'react-router-dom';
 
 function Requests() {
     const requests = useSelector((store) => store.Requests);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [error, setError] = useState("");
 
     const reviewRequest = async (status, requestId) => {
@@ -14,6 +17,8 @@ function Requests() {
             const reviewRqst = await axios.post(BASE_URL + '/request/review/' + status + "/" + requestId, {}, { withCredentials: true });
             dispatch(removeRequest(requestId))
         } catch (err) {
+            if (err.status === 401)
+                navigate("/login");
             setError(err?.response?.data?.message || "Something went wrong");
         }
     }
@@ -25,6 +30,8 @@ function Requests() {
             const data = await axios.get(BASE_URL + '/user/requests/received', { withCredentials: true });
             dispatch(addRequest(data.data.data))
         } catch (err) {
+            if (err.status === 401)
+                navigate("/login");
             setError(err?.response?.data?.message || "Something went wrong");
         }
     }

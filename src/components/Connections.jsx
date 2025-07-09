@@ -3,11 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { BASE_URL } from '../utils/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnection } from '../utils/connectionSlice';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Connections = () => {
     const connections = useSelector((store) => store.connections);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [error, setError] = useState("");
 
     const fetchConnection = async () => {
@@ -16,6 +17,8 @@ const Connections = () => {
             const data = await axios.get(BASE_URL + '/user/requests/connections', { withCredentials: true });
             dispatch(addConnection(data.data.data));
         } catch (err) {
+            if (err.status === 401)
+                navigate("/login");
             setError(err?.response?.data?.message || "Something went wrong");
         }
     };

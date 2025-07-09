@@ -3,10 +3,12 @@ import { removeUserFromFeed } from '../utils/feedSlice';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 function UserCard({ user }) {
     const [error, setError] = useState("");
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
 
     const handleSendRequest = async (status, userId) => {
@@ -15,11 +17,13 @@ function UserCard({ user }) {
             dispatch(removeUserFromFeed(userId))
 
         } catch (err) {
+            if (err.status === 401)
+                navigate("/login");
             setError(err?.response?.data?.message || "Something went wrong");
         }
     }
 
-    const { _id,firstName, lastName, profilePic, age, about, gender } = user;
+    const { _id, firstName, lastName, profilePic, age, about, gender } = user;
     return (
         <div className="card bg-base-300 w-96 shadow-sm">
             <figure>
