@@ -8,6 +8,7 @@ import { addUser } from '../utils/userSlice';
 function EditProfile({ user }) {
     const dispatch = useDispatch();
 
+    const [userId, setUserId] = useState(user._id);
     const [firstName, setFirstName] = useState(user.firstName);
     const [lastName, setLastName] = useState(user.lastName);
     const [age, setAge] = useState(user.age);
@@ -105,7 +106,7 @@ function EditProfile({ user }) {
 
             {/* Preview Card */}
             <div className="w-full max-w-sm flex justify-center align-middle">
-                <UserCard user={{ firstName, lastName, profilePic, age, gender, about }} />
+                <UserCard user={{ userId, firstName, lastName, profilePic, age, gender, about }} />
             </div>
 
             {/* Toast */}

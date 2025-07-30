@@ -12,6 +12,7 @@ import Premium from './components/Premium';
 import Chat from './components/Chat';
 
 import ProtectedRoute from './middlewares/ProtectedRoute';
+import UserProfile from './components/UserProfile';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
               <Route index element={<Feed />} /> 
               <Route path='login' element={<Login />} />
               <Route path='profile' element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="view/:userId" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
               <Route path='connections' element={<ProtectedRoute><Connections /></ProtectedRoute>} />
               <Route path='requests' element={<ProtectedRoute><Requests /></ProtectedRoute>} />
               <Route path='premium' element={<ProtectedRoute><Premium /></ProtectedRoute>} />
